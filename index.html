@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 3em;
+      color: #fff;
+      text-shadow: 2px 2px 5px #ff3366;
+    }
+    .buttons {
+      margin-top: 30px;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px;
+      transition: all 0.3s ease;
+    }
+    #yes {
+      background-color: #ff3366;
+      color: white;
+    }
+    #no {
+      background-color: #333;
+      color: white;
+      position: relative;
+    }
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      animation: fall 3s linear forwards;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    .yay {
+      font-size: 4em;
+      color: #fff;
+      text-shadow: 3px 3px 10px #ff3366;
+      margin-top: 20px;
+      animation: pop 1s ease forwards;
+    }
+    @keyframes pop {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Will you be my Valentine? 💖</h1>
+  <div class="buttons">
+    <button id="yes">Yes 💕</button>
+    <button id="no">No 💔</button>
+  </div>
+  <div id="result"></div>
+
+  <script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const result = document.getElementById("result");
+
+    // Make "No" button dodge
+    noBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.position = "absolute";
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    });
+
+    // For mobile (touch)
+    noBtn.addEventListener("touchstart", () => {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.position = "absolute";
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    });
+
+    // When "Yes" is clicked
+    yesBtn.addEventListener("click", () => {
+      document.body.innerHTML = "";
+      const yay = document.createElement("div");
+      yay.className = "yay";
+      yay.innerText = "YAAAYYYY 💖🎉💘";
+      document.body.appendChild(yay);
+
+      // Confetti hearts
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.top = "-10px";
+        confetti.style.backgroundColor = ["#ff3366","#ff6699","#ffcc00","#66ffcc","#66ccff"][Math.floor(Math.random()*5)];
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 3000);
+      }
+    });
+  </script>
+</body>
+</html>
