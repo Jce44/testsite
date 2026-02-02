@@ -43,11 +43,14 @@
     #yes {
       background-color: #ff3366;
       color: white;
-      transition: transform 0.3s ease;
+      animation: heartbeat 1.5s infinite;
     }
-    /* Yes button grows bigger */
     #yes:hover, #yes:active {
       transform: scale(1.2);
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
     }
     #no {
       background-color: #333;
@@ -56,11 +59,14 @@
     }
     .confetti {
       position: fixed;
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       background-color: red;
       animation: fall 3s linear forwards;
-      border-radius: 50%;
+      clip-path: polygon(50% 0%, 61% 19%, 82% 19%, 
+                         100% 38%, 100% 61%, 82% 82%, 
+                         50% 100%, 18% 82%, 0% 61%, 
+                         0% 38%, 18% 19%, 39% 19%);
     }
     @keyframes fall {
       to {
@@ -79,6 +85,16 @@
       from { transform: scale(0); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
+    .gif {
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+      margin-top: 20px;
+      max-width: 80%;
+      border-radius: 20px;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
 
     /* 📱 Mobile tweaks */
     @media (max-width: 600px) {
@@ -92,7 +108,6 @@
       .yay {
         font-size: 2em;
       }
-      /* Confetti slower on mobile */
       .confetti {
         animation: fall 5s linear forwards;
       }
@@ -134,7 +149,6 @@
         y = Math.random() * (window.innerHeight - noHeight);
         tries++;
       } while (
-        // Prevent overlap with Yes button (with buffer)
         x < yesRect.right + 50 &&
         x + noWidth > yesRect.left - 50 &&
         y < yesRect.bottom + 50 &&
@@ -147,7 +161,6 @@
       noBtn.style.top = y + "px";
     }
 
-    // Yes button click
     yesBtn.addEventListener("click", () => {
       document.body.innerHTML = "";
       const yay = document.createElement("div");
@@ -155,14 +168,11 @@
       yay.innerText = "YAAAYYYY 💖🎉💘";
       document.body.appendChild(yay);
 
-      // Animated GIF or image
       const gif = document.createElement("img");
-      gif.src = "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif"; // Valentine GIF
-      gif.style.marginTop = "20px";
-      gif.style.maxWidth = "80%";
+      gif.src = "https://media.tenor.com/1ZzXzGJZK8gAAAAC/valentine-love.gif";
+      gif.className = "gif";
       document.body.appendChild(gif);
 
-      // Confetti hearts
       for (let i = 0; i < 80; i++) {
         const confetti = document.createElement("div");
         confetti.className = "confetti";
