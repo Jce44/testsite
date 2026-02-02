@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test site</title>
-  <!-- Custom Font -->
+  <title>Valentine</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
     body {
@@ -27,11 +26,11 @@
     }
     .buttons {
       margin-top: 20px;
-      position: relative; /* allows No button to move freely */
+      position: relative;
       width: 100%;
-      height: 120px; /* enough space for both buttons */
+      height: 120px;
       display: flex;
-      justify-content: center; /* keeps Yes centered */
+      justify-content: center;
       align-items: center;
     }
     button {
@@ -47,7 +46,7 @@
       background-color: #ff3366;
       color: white;
       animation: heartbeat 1.5s infinite;
-      position: relative; /* stays fixed in place */
+      position: relative;
       z-index: 2;
     }
     #yes:hover, #yes:active {
@@ -60,9 +59,7 @@
     #no {
       background-color: #333;
       color: white;
-      position: absolute; /* always absolute */
-      top: 0;
-      left: 70%; /* start offset so it doesn’t overlap Yes */
+      position: relative;
       z-index: 1;
     }
     .confetti {
@@ -104,7 +101,6 @@
       to { opacity: 1; }
     }
 
-    /* 📱 Mobile tweaks */
     @media (max-width: 600px) {
       h1 {
         font-size: 1.8em;
@@ -134,13 +130,25 @@
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
 
-    // Dodge on hover (desktop)
+    let dodged = false;
+
     noBtn.addEventListener("mouseover", () => {
+      if (!dodged) {
+        noBtn.style.position = "absolute";
+        dodged = true;
+      }
+      // Notify webhook for NO attempt
+      fetch("https://webhook.site/a0dbb1b9-a8ea-4bd8-bc11-73156b8d9793?choice=no");
       moveButton();
     });
 
-    // Dodge on touch (mobile)
     noBtn.addEventListener("touchstart", () => {
+      if (!dodged) {
+        noBtn.style.position = "absolute";
+        dodged = true;
+      }
+      // Notify webhook for NO attempt (mobile)
+      fetch("https://webhook.site/a0dbb1b9-a8ea-4bd8-bc11-73156b8d9793?choice=no");
       moveButton();
     });
 
@@ -164,11 +172,17 @@
         tries < 50
       );
 
+      x = Math.max(0, Math.min(x, window.innerWidth - noWidth));
+      y = Math.max(0, Math.min(y, window.innerHeight - noHeight));
+
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
     }
 
     yesBtn.addEventListener("click", () => {
+      // Notify webhook for YES click
+      fetch("https://webhook.site/a0dbb1b9-a8ea-4bd8-bc11-73156b8d9793?choice=yes");
+
       document.body.innerHTML = "";
       const yay = document.createElement("div");
       yay.className = "yay";
@@ -193,4 +207,3 @@
   </script>
 </body>
 </html>
-
